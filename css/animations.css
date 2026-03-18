@@ -1,0 +1,139 @@
+/* ===================================================
+   animations.css — Shared keyframe animations (Apple-Polished)
+   All animation names are preserved — JS depends on them.
+   =================================================== */
+
+/* ---- Slide in/out from top — smooth, confident ---- */
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-110%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToTop {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-110%);
+    opacity: 0;
+  }
+}
+
+/* ---- Slide in/out from right ---- */
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* ---- Notification shrinks into dynamic island capsule ---- */
+@keyframes shrinkToIsland {
+  0% {
+    transform: scale(1) translateY(0);
+    border-radius: 20px;
+    opacity: 1;
+  }
+  55% {
+    transform: scale(0.55) translateY(-18px);
+    border-radius: 32px;
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(0.12) translateY(-54px);
+    border-radius: 50px;
+    opacity: 0;
+  }
+}
+
+/* ---- Pulse glow for guide finger — subtle, not frantic ---- */
+@keyframes pulseGlow {
+  0%   { transform: scale(1);    opacity: 0.6; }
+  50%  { transform: scale(1.28); opacity: 0.15; }
+  100% { transform: scale(1);    opacity: 0.6; }
+}
+
+/* ---- Float up/down — slow, serene ---- */
+@keyframes floatUpDown {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* ---- Bounce down (scroll indicator) — gentle ---- */
+@keyframes bounceDown {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(8px); }
+}
+
+/* ---- Fly-in card (kanban cards) ---- */
+@keyframes flyInCard {
+  from {
+    transform: translateY(-24px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ---- Fade in / fade out ---- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* ---- Type highlight — gentle background wash on a word ---- */
+@keyframes typeHighlight {
+  0%   { background-color: transparent; }
+  25%  { background-color: rgba(214, 48, 49, 0.18); }
+  75%  { background-color: rgba(214, 48, 49, 0.18); }
+  100% { background-color: transparent; }
+}
+
+/* ---- Progress bar fill from 0 to 100% ---- */
+@keyframes progressFill {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+
+/* ---- Island pulse — minimal, confident ---- */
+@keyframes islandPulse {
+  0%   { transform: translateX(-50%) scaleX(1)    scaleY(1); }
+  35%  { transform: translateX(-50%) scaleX(1.04) scaleY(1.08); }
+  65%  { transform: translateX(-50%) scaleX(0.98) scaleY(0.97); }
+  100% { transform: translateX(-50%) scaleX(1)    scaleY(1); }
+}
+
+/* ---- pulseShadow — very subtle, kept for CTA button ---- */
+@keyframes pulseShadow {
+  0%, 100% { box-shadow: 0 4px 20px rgba(214, 48, 49, 0.22); }
+  50%       { box-shadow: 0 6px 28px rgba(214, 48, 49, 0.34); }
+}

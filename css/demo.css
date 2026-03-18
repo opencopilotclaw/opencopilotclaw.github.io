@@ -1,0 +1,1420 @@
+/* ===================================================
+   demo.css — Demo Mode Shell Styles
+   =================================================== */
+
+/* ---- Demo root ---- */
+#demo-mode {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F9F9FB 100%);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ===================================================
+   Progress / Scene Navigation Bar
+   =================================================== */
+.demo-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: rgba(255, 255, 255, 0.72);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.demo-progress-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 0 1rem;
+}
+
+/* Individual scene tab button — Apple segment control style */
+.progress-tab {
+  flex: 1;
+  max-width: 180px;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  font-family: var(--font-cn);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-mid);
+  cursor: pointer;
+  transition: color 0.3s var(--transition), background 0.3s var(--transition);
+  text-align: center;
+  position: relative;
+  border-bottom: 2px solid transparent;
+  letter-spacing: 0.01em;
+}
+
+.progress-tab:hover {
+  color: var(--color-dark);
+}
+
+.progress-tab.active {
+  color: var(--color-primary);
+  font-weight: 600;
+  border-bottom-color: var(--color-primary);
+}
+
+/* The thin progress line that fills proportionally */
+.progress-line-track {
+  height: 3px;
+  background: var(--color-light);
+  width: 100%;
+  position: relative;
+}
+
+.progress-line-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  border-radius: 0 2px 2px 0;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 33.33%;
+}
+
+/* ===================================================
+   Scene Container
+   =================================================== */
+#scene-container {
+  margin-top: 64px;   /* leave room for fixed progress bar */
+  flex: 1;
+  max-width: 860px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2rem 1.5rem 4rem;
+  transition: opacity 0.4s ease;
+}
+
+/* ===================================================
+   Overlay Layer (notifications, island, guide finger)
+   =================================================== */
+#overlay-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 500;
+}
+
+/* All direct children that need interaction get pointer-events back */
+#overlay-layer > * {
+  pointer-events: auto;
+}
+
+/* ===================================================
+   Notification Bar
+   =================================================== */
+.notification-bar {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%) translateY(-120%);
+  z-index: 600;
+  background: rgba(29, 29, 31, 0.82);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  backdrop-filter: saturate(180%) blur(24px);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 340px;
+  max-width: 540px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.24), 0 0 0 0.5px rgba(255,255,255,0.08) inset;
+  font-size: 14px;
+  transition: transform 0.5s var(--transition-spring), opacity 0.35s var(--transition);
+  opacity: 0;
+  pointer-events: auto;
+}
+
+/* Position variants */
+.notification-bar--top {
+  top: 80px;  /* just below the progress bar */
+}
+
+.notification-bar--bottom-right {
+  top: auto;
+  bottom: 2rem;
+  left: auto;
+  right: 1.5rem;
+  transform: translateX(120%);
+}
+
+/* Revealed state */
+.notification-bar--visible {
+  opacity: 1;
+}
+.notification-bar--top.notification-bar--visible {
+  transform: translateX(-50%) translateY(0);
+}
+.notification-bar--bottom-right.notification-bar--visible {
+  transform: translateX(0);
+}
+
+/* Hiding state */
+.notification-bar--hiding {
+  animation: slideOutToTop 0.35s ease forwards;
+}
+.notification-bar--bottom-right.notification-bar--hiding {
+  animation: slideOutToRight 0.35s ease forwards;
+}
+
+/* Shrink-to-island animation */
+.notification-bar--shrink {
+  animation: shrinkToIsland 0.5s ease forwards;
+}
+
+.notif-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.notif-desc {
+  flex: 1;
+  line-height: 1.45;
+  font-weight: 500;
+}
+
+.notif-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.notif-btn {
+  padding: 0.4rem 0.9rem;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-cn);
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.notif-btn:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.notif-btn--accept {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.notif-btn--reject {
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* ===================================================
+   Dynamic Island
+   =================================================== */
+.dynamic-island {
+  position: fixed;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0.4) scaleY(0.6);
+  z-index: 700;
+  background: #1D1D1F;
+  color: #fff;
+  border-radius: 36px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  min-width: 160px;
+  max-width: 400px;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.32),
+    0 0 0 0.5px rgba(255,255,255,0.06) inset;
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity 0.35s var(--transition),
+    transform 0.5s var(--transition-spring),
+    background 0.5s var(--transition),
+    border-radius 0.5s var(--transition),
+    padding 0.4s var(--transition),
+    min-width 0.4s var(--transition);
+  pointer-events: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  letter-spacing: 0.01em;
+}
+
+.dynamic-island--visible {
+  opacity: 1;
+  transform: translateX(-50%) scaleX(1) scaleY(1);
+}
+
+.dynamic-island--pulse {
+  animation: islandPulse 0.5s ease;
+}
+
+.dynamic-island--complete {
+  background: linear-gradient(135deg, #00b894, #FDCB6E);
+}
+
+/* Expanded panel beneath the status text */
+.dynamic-island--expanded {
+  border-radius: var(--radius);
+  padding: 0.7rem 1.1rem;
+  min-width: 260px;
+  white-space: normal;
+}
+
+.island-status {
+  display: block;
+}
+
+.island-panel {
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.55;
+  animation: fadeIn 0.3s ease;
+  width: 100%;
+  white-space: normal;
+}
+
+/* ===================================================
+   Guide Finger
+   =================================================== */
+.guide-finger {
+  position: fixed;
+  z-index: 800;
+  width: 40px;
+  height: 40px;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.guide-finger__pulse {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(214, 48, 49, 0.15);
+  animation: pulseGlow 1.6s ease-in-out infinite;
+}
+
+.guide-finger__emoji {
+  font-size: 22px;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+}
+
+/* ===================================================
+   Chat Bubbles (used in scene-chat)
+   =================================================== */
+.chat-window {
+  background: #f5f5f7;
+  border-radius: var(--radius);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  overflow-y: auto;
+  max-height: 420px;
+  min-height: 240px;
+}
+
+.chat-bubble {
+  max-width: 72%;
+  padding: 0.6rem 0.9rem;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  animation: fadeIn 0.25s ease;
+}
+
+.chat-bubble.other {
+  background: #fff;
+  align-self: flex-start;
+  box-shadow: 0 2px 8px rgba(45, 52, 54, 0.08);
+}
+
+.chat-bubble.me {
+  background: var(--color-primary);
+  color: #fff;
+  align-self: flex-end;
+}
+
+.chat-bubble.highlight {
+  outline: 2px solid var(--color-accent);
+  animation: typeHighlight 1.5s ease;
+}
+
+.chat-bubble .sender {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.65;
+  margin-bottom: 0.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ===================================================
+   Scene Transition Overlay
+   =================================================== */
+.scene-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  background: rgba(255, 255, 255, 0.88);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  animation: fadeIn 0.4s var(--transition);
+  pointer-events: none;
+}
+
+.scene-transition__clock {
+  font-size: 64px;
+  line-height: 1;
+}
+
+.scene-transition__label {
+  font-family: var(--font-en), var(--font-cn);
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--color-dark);
+  letter-spacing: -1px;
+}
+
+.scene-transition__sub {
+  font-size: 14px;
+  color: #636e72;
+}
+
+.scene-transition--out {
+  animation: fadeOut 0.35s ease forwards;
+}
+
+/* ===================================================
+   Responsive
+   =================================================== */
+@media (max-width: 640px) {
+  .notification-bar {
+    min-width: calc(100vw - 2rem);
+    max-width: calc(100vw - 2rem);
+    font-size: 13px;
+  }
+
+  #scene-container {
+    padding: 1.25rem 1rem 3rem;
+  }
+
+  .progress-tab {
+    font-size: 12px;
+    padding: 0.7rem 0.5rem;
+  }
+}
+
+/* ===================================================
+   Scene Chat — Phone-like Chat Window (Task 10)
+   =================================================== */
+/* Phone-frame chat window with bezel effect */
+.chat-window {
+  background: #fff;
+  border-radius: 40px;
+  box-shadow:
+    0 0 0 2px #1D1D1F,
+    0 20px 60px rgba(0, 0, 0, 0.18),
+    0 4px 16px rgba(0, 0, 0, 0.08);
+  max-width: 390px;
+  width: 100%;
+  height: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Phone notch */
+.chat-window::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 28px;
+  background: #1D1D1F;
+  border-radius: 0 0 18px 18px;
+  z-index: 10;
+}
+
+/* WeChat-style green header with room for notch */
+.chat-header {
+  background: #07C160;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 36px 1rem 10px;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+.chat-header__back {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  margin-right: 0.2rem;
+  font-weight: 300;
+}
+
+.chat-header__contact {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex: 1;
+}
+
+.chat-header__online-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #b7f9c9;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.35);
+}
+
+.chat-header__name {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.chat-header__spacer {
+  width: 36px; /* mirror back button width to keep name centred */
+}
+
+/* Scrollable message area */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 0.85rem;
+  background: #ededed;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+/* Override existing .chat-bubble.me to use WeChat green */
+.chat-messages .chat-bubble.me {
+  background: #95EC69;
+  color: #1a1a1a;
+  align-self: flex-end;
+  max-width: 75%;
+  border-radius: 12px 2px 12px 12px;
+}
+
+/* Override existing .chat-bubble.other for phone-screen look */
+.chat-messages .chat-bubble.other {
+  background: #fff;
+  align-self: flex-start;
+  max-width: 75%;
+  border-radius: 2px 12px 12px 12px;
+  box-shadow: 0 1px 4px rgba(45,52,54,0.07);
+}
+
+.chat-messages .chat-bubble .sender {
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.55;
+  margin-bottom: 0.2rem;
+  display: block;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.chat-messages .chat-bubble p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Trigger word highlight */
+.chat-bubble.highlight span.trigger-word {
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: 4px;
+  padding: 0 3px;
+}
+
+span.trigger-word--animate {
+  animation: typeHighlight 1.4s ease;
+}
+
+/* Fake bottom input bar */
+.chat-input-bar {
+  padding: 0.65rem 0.9rem;
+  background: #f7f7f7;
+  border-top: 1px solid #e0e0e0;
+  flex-shrink: 0;
+}
+
+.chat-input-bar__field {
+  width: 100%;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+  font-size: 14px;
+  color: #aaa;
+  outline: none;
+  font-family: var(--font-cn);
+  box-sizing: border-box;
+  cursor: default;
+}
+
+/* ===================================================
+   Scene Chat — Result Panel inside Dynamic Island (Task 12)
+   =================================================== */
+.result-section {
+  margin-bottom: 0.75rem;
+  padding: 0 0.1rem;
+}
+
+.result-section h4 {
+  font-size: 12px;
+  font-weight: 700;
+  margin: 0 0 0.35rem;
+  opacity: 0.85;
+  letter-spacing: 0.02em;
+}
+
+.result-quote {
+  background: rgba(255, 255, 255, 0.15);
+  font-style: italic;
+  padding: 0.45rem 0.65rem;
+  border-radius: 8px;
+  font-size: 13px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.result-draft {
+  background: rgba(149, 236, 105, 0.2);
+  padding: 0.45rem 0.65rem;
+  border-radius: 8px;
+  font-size: 13px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.result-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 0.6rem;
+  padding-top: 0.5rem;
+}
+
+.result-btn {
+  border-radius: 50px;
+  padding: 0.45rem 1rem;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-cn);
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.result-btn:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.result-btn--primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.result-btn--secondary {
+  background: transparent;
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.6);
+}
+
+/* ===================================================
+   Scene Meeting — Video Meeting Mockup (Tasks 13-15)
+   =================================================== */
+
+/* Laptop-screen container with bezel */
+.meeting-window {
+  background: #1D1D1F;
+  border-radius: var(--radius-lg);
+  box-shadow:
+    0 0 0 2px #3a3a3c,
+    0 24px 64px rgba(0, 0, 0, 0.22),
+    0 8px 24px rgba(0, 0, 0, 0.10);
+  max-width: 750px;
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Top bar: title + timer */
+.meeting-header {
+  background: var(--color-dark);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.25rem;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.meeting-title {
+  letter-spacing: 0.01em;
+}
+
+.meeting-timer {
+  font-family: 'SF Mono', 'Courier New', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0.7;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+}
+
+/* 2x2 participant grid */
+.participant-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  background: #1a1a2e;
+  padding: 1.5rem 2rem;
+}
+
+.participant-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem;
+}
+
+/* Avatar: colored circle with initials */
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: bold;
+  font-size: 24px;
+  position: relative;
+  transition: box-shadow 0.3s ease;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.avatar-name {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.avatar-role {
+  font-size: 11px;
+  opacity: 0.65;
+  margin-left: 4px;
+}
+
+/* Badge for "你" label */
+.avatar-badge {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 50px;
+  line-height: 1.4;
+}
+
+/* Pulsing ring when avatar is speaking */
+.avatar.speaking {
+  box-shadow:
+    0 0 0 3px rgba(253, 203, 110, 0.9),
+    0 0 0 6px rgba(253, 203, 110, 0.4);
+  animation: speakingPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes speakingPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 3px rgba(253, 203, 110, 0.9),
+      0 0 0 6px rgba(253, 203, 110, 0.4);
+  }
+  50% {
+    box-shadow:
+      0 0 0 4px rgba(253, 203, 110, 1),
+      0 0 0 10px rgba(253, 203, 110, 0.15);
+  }
+}
+
+/* Real-time subtitle bar */
+.subtitle-bar {
+  background: #2d3436;
+  padding: 0.85rem 1.5rem;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.subtitle-text {
+  color: #fff;
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 1.5em;
+}
+
+/* Trigger words in subtitle */
+.subtitle-text .trigger-word {
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: 4px;
+  padding: 0 3px;
+}
+
+/* Meeting progress bar (below meeting window) */
+.meeting-progress {
+  height: 4px;
+  background: #dfe6e9;
+  max-width: 750px;
+  width: 100%;
+  margin: 0 auto;
+  border-radius: 0 0 4px 4px;
+  overflow: hidden;
+}
+
+.meeting-progress-fill {
+  height: 100%;
+  background: var(--color-primary);
+  width: 0%;
+  transition: width 25s linear;
+}
+
+/* ===================================================
+   Scene Meeting — Highlight Moment Overlay (Task 15)
+   =================================================== */
+.highlight-moment {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 850;
+  background: rgba(29, 29, 31, 0.88);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  padding: 20px 36px;
+  border-radius: var(--radius);
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s var(--transition);
+  white-space: nowrap;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3);
+  letter-spacing: -0.3px;
+}
+
+.highlight-moment--visible {
+  opacity: 1;
+}
+
+.highlight-moment--out {
+  animation: fadeOut 0.4s ease forwards;
+}
+
+/* ===================================================
+   Scene Meeting — Diff View + Email Draft (Task 15)
+   =================================================== */
+.diff-view {
+  font-family: 'SF Mono', 'Courier New', monospace;
+  background: #1e1e1e;
+  border-radius: 8px;
+  padding: 0.5rem 0;
+  font-size: 12px;
+  overflow: hidden;
+}
+
+.diff-line {
+  padding: 4px 12px;
+  line-height: 1.6;
+}
+
+.diff-remove {
+  color: #ff6b6b;
+  text-decoration: line-through;
+  text-decoration-color: rgba(255, 107, 107, 0.6);
+  background: rgba(255, 107, 107, 0.08);
+}
+
+.diff-add {
+  color: #51cf66;
+  background: rgba(81, 207, 102, 0.08);
+}
+
+.email-draft {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
+  font-size: 14px;
+  color: #2d3436;
+}
+
+.email-draft p {
+  margin: 6px 0;
+  line-height: 1.5;
+}
+
+.email-draft strong {
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+/* ===================================================
+   Scene Kanban — Counter Badge (Task 16)
+   =================================================== */
+.claw-counter {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--color-dark);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 50px;
+  z-index: 10;
+  letter-spacing: 0.02em;
+  transition: transform 0.15s ease;
+}
+
+@keyframes counterPulse {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.35); }
+  70%  { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+
+.claw-counter.pulse {
+  animation: counterPulse 0.45s ease;
+}
+
+/* ===================================================
+   Scene Kanban — Task Side Panel (Task 16)
+   =================================================== */
+@keyframes slideInFromRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+.task-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 350px;
+  height: 100vh;
+  background: #fff;
+  box-shadow: -6px 0 32px rgba(45, 52, 54, 0.18);
+  padding: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  animation: slideInFromRight 0.45s cubic-bezier(0.34, 1.20, 0.64, 1) forwards;
+  overflow-y: auto;
+}
+
+.task-panel-header {
+  padding: 20px 20px 16px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-dark);
+  border-bottom: 1px solid #f0f0f0;
+  line-height: 1.4;
+}
+
+.task-panel-list {
+  flex: 1;
+  padding: 8px 0;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid #f5f5f5;
+  gap: 10px;
+}
+
+.task-checkbox {
+  font-size: 20px;
+  flex-shrink: 0;
+  color: #b2bec3;
+}
+
+.task-text {
+  flex: 1;
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--color-dark);
+}
+
+.task-tag {
+  background: #f0f0f0;
+  border-radius: 12px;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #636e72;
+  white-space: nowrap;
+}
+
+.tag-urgent {
+  background: #ffe0e0;
+  color: var(--color-primary);
+}
+
+.task-panel-actions {
+  padding: 16px 20px 24px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  border-top: 1px solid #f0f0f0;
+}
+
+.result-btn--ghost {
+  background: transparent;
+  color: #b2bec3;
+  border: none;
+}
+
+.result-btn--ghost:hover {
+  color: #636e72;
+}
+
+/* Override secondary button for dark-bg-independent use */
+.result-btn--dark-border {
+  background: transparent;
+  color: var(--color-dark);
+  border: 1.5px solid #dfe6e9;
+}
+
+/* ===================================================
+   Scene Kanban — Kanban + Calendar Split View (Task 17)
+   =================================================== */
+.kanban-calendar-split {
+  display: flex;
+  gap: 24px;
+  padding: 24px 8px;
+  max-width: 900px;
+  margin: 0 auto;
+  align-items: flex-start;
+}
+
+.kanban-board {
+  flex: 6;
+  display: flex;
+  gap: 12px;
+  min-width: 0;
+}
+
+.kanban-column {
+  flex: 1;
+  background: #f4f5f7;
+  border-radius: var(--radius);
+  padding: 12px;
+  min-width: 0;
+}
+
+.kanban-column-header {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--color-dark);
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e0e4e8;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.kanban-count {
+  background: #dfe6e9;
+  color: #636e72;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 50px;
+}
+
+.kanban-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 4px rgba(45, 52, 54, 0.08);
+  border-left: 4px solid #dfe6e9;
+}
+
+.kanban-card .card-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-dark);
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+
+.kanban-card .card-tag {
+  display: inline-block;
+  font-size: 11px;
+  padding: 1px 8px;
+  border-radius: 10px;
+  background: #f0f0f0;
+  color: #636e72;
+  font-weight: 500;
+}
+
+.kanban-card .card-tag.tag-urgent {
+  background: #ffe0e0;
+  color: var(--color-primary);
+}
+
+.kanban-card.existing {
+  opacity: 0.45;
+}
+
+@keyframes flyInCard {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes cardGlow {
+  0%   { box-shadow: 0 1px 4px rgba(45,52,54,0.08); }
+  40%  { box-shadow: 0 0 0 3px rgba(214,48,49,0.25), 0 4px 16px rgba(214,48,49,0.15); }
+  100% { box-shadow: 0 1px 4px rgba(45,52,54,0.08); }
+}
+
+.kanban-card.new-card {
+  animation: flyInCard 0.5s ease-out, cardGlow 1.2s ease 0.5s;
+}
+
+/* ===================================================
+   Scene Kanban — Calendar (Task 17)
+   =================================================== */
+.calendar {
+  flex: 4;
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: 0 4px 20px rgba(45, 52, 54, 0.10);
+  min-width: 0;
+}
+
+.calendar-header {
+  text-align: center;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--color-dark);
+  margin-bottom: 12px;
+  letter-spacing: 0.01em;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: #b2bec3;
+  margin-bottom: 4px;
+  letter-spacing: 0.03em;
+}
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.calendar-day {
+  text-align: center;
+  padding: 6px 2px;
+  font-size: 13px;
+  color: var(--color-dark);
+  position: relative;
+  border-radius: 6px;
+  min-height: 36px;
+}
+
+.calendar-day--empty {
+  pointer-events: none;
+}
+
+.calendar-day .day-num {
+  position: relative;
+  z-index: 1;
+}
+
+.calendar-day .day-marker {
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.day-marker--red    { background: var(--color-primary); }
+.day-marker--orange { background: var(--color-accent); }
+
+.calendar-day .day-tag {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 2px 5px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.day-tag--red    { background: #ffe0e0; color: var(--color-primary); }
+.day-tag--orange { background: #fff0e6; color: var(--color-accent); }
+
+@keyframes tagFadeIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(6px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.day-tag--fade {
+  animation: tagFadeIn 0.4s ease forwards;
+}
+
+/* ===================================================
+   Scene Kanban — Archive Banner (Task 17)
+   =================================================== */
+.archive-banner {
+  text-align: center;
+  padding: 20px 16px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-top: 8px;
+  animation: fadeIn 0.5s ease;
+  letter-spacing: 0.01em;
+}
+
+/* ===================================================
+   Summary Page (Task 18)
+   =================================================== */
+.summary-page {
+  text-align: center;
+  padding: 80px 24px 60px;
+  max-width: 860px;
+  margin: auto;
+}
+
+.summary-title {
+  font-family: var(--font-en), var(--font-cn);
+  font-size: 44px;
+  color: var(--color-dark);
+  margin-bottom: 48px;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+}
+
+.summary-cards {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 60px;
+}
+
+.summary-card {
+  flex: 1;
+  background: #fff;
+  padding: 36px 28px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  border-top: none;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle top accent line */
+.summary-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--color-primary);
+}
+
+.summary-card:nth-child(2)::before {
+  background: var(--color-accent);
+}
+
+.summary-card:nth-child(3)::before {
+  background: var(--color-success);
+}
+
+.summary-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.summary-card h3 {
+  font-size: 20px;
+  color: var(--color-dark);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.summary-card p {
+  color: #636e72;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.summary-brand {
+  margin-bottom: 40px;
+}
+
+.summary-logo {
+  font-size: 96px;
+  margin-bottom: 20px;
+  line-height: 1;
+  filter: drop-shadow(0 0 32px rgba(214, 48, 49, 0.15));
+}
+
+.summary-brand-name {
+  font-family: var(--font-en), var(--font-cn);
+  font-size: 56px;
+  font-weight: 800;
+  letter-spacing: -2px;
+  margin: 0 0 0.25rem;
+}
+
+.summary-slogan {
+  font-size: 18px;
+  color: #636e72;
+  margin-top: 12px;
+  margin-bottom: 0;
+}
+
+.summary-tagline {
+  font-size: 14px;
+  color: #b2bec3;
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+
+.summary-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.cta-btn--outline {
+  background: transparent;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+  animation: none;
+  box-shadow: none;
+}
+
+.cta-btn--outline:hover {
+  background: rgba(214, 48, 49, 0.06);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(214, 48, 49, 0.18);
+  animation: none;
+}
+
+/* ===================================================
+   Responsive — 768px breakpoint (Task 19)
+   =================================================== */
+@media (max-width: 768px) {
+  .kanban-calendar-split {
+    flex-direction: column;
+  }
+
+  .chat-window {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .meeting-window {
+    max-width: 100%;
+  }
+
+  .summary-cards {
+    flex-direction: column;
+  }
+
+  .task-panel {
+    width: 100%;
+  }
+}

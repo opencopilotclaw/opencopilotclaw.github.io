@@ -1,0 +1,364 @@
+/* ===================================================
+   landing.css — Landing Page Styles (Apple-Polished)
+   =================================================== */
+
+/* ===== Hero Section ===== */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 2rem 8rem;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FBF7F5 55%, #F5EFEB 100%);
+  overflow: hidden;
+}
+
+/* Subtle ambient light — large, very soft, far away */
+.hero::before {
+  content: "";
+  position: absolute;
+  width: 900px;
+  height: 900px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(214, 48, 49, 0.04) 0%, transparent 65%);
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+/* Remove the second decorative circle — it reads as cheap */
+.hero::after {
+  content: none;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+  max-width: 740px;
+  z-index: 1;
+}
+
+/* Logo — iconic, large, with a soft glow halo instead of float animation */
+.hero-logo {
+  font-size: 160px;
+  line-height: 1;
+  user-select: none;
+  position: relative;
+  /* Subtle glow behind the emoji via drop-shadow */
+  filter: drop-shadow(0 0 48px rgba(214, 48, 49, 0.18)) drop-shadow(0 8px 24px rgba(214, 48, 49, 0.12));
+  animation: gentleBreath 5s var(--transition) infinite;
+}
+
+@keyframes gentleBreath {
+  0%, 100% { transform: scale(1);    filter: drop-shadow(0 0 48px rgba(214, 48, 49, 0.18)) drop-shadow(0 8px 24px rgba(214, 48, 49, 0.12)); }
+  50%       { transform: scale(1.03); filter: drop-shadow(0 0 64px rgba(214, 48, 49, 0.24)) drop-shadow(0 12px 32px rgba(214, 48, 49, 0.16)); }
+}
+
+/* Brand name */
+.hero-brand {
+  font-family: var(--font-en), var(--font-cn);
+  font-size: 72px;
+  font-weight: 800;
+  letter-spacing: -2.5px;
+  line-height: 1.05;
+}
+
+.brand-dark {
+  color: var(--color-dark);
+}
+
+.brand-red {
+  color: var(--color-primary);
+}
+
+/* Slogan */
+.hero-slogan {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--color-dark);
+  letter-spacing: -0.5px;
+  line-height: 1.4;
+}
+
+/* Subtitle */
+.hero-subtitle {
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--color-mid);
+  max-width: 560px;
+  line-height: 1.8;
+  text-align: center;
+}
+
+/* CTA Button — pill shape, confident, premium */
+.cta-btn {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 18px 44px;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 600;
+  border-radius: 50px;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 20px rgba(214, 48, 49, 0.28);
+  transition:
+    background var(--duration-base) var(--transition),
+    transform var(--duration-base) var(--transition),
+    box-shadow var(--duration-base) var(--transition);
+}
+
+.cta-btn:hover {
+  background: #c0392b;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 36px rgba(214, 48, 49, 0.36);
+}
+
+.cta-btn:active {
+  transform: translateY(0px) scale(0.99);
+  box-shadow: 0 2px 12px rgba(214, 48, 49, 0.22);
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  opacity: 0.35;
+}
+
+.chevron-bounce {
+  font-size: 28px;
+  color: var(--color-dark);
+  animation: gentleNod 2.4s var(--transition) infinite;
+  line-height: 1;
+}
+
+@keyframes gentleNod {
+  0%, 100% { transform: translateY(0); opacity: 0.35; }
+  50%       { transform: translateY(8px); opacity: 0.6; }
+}
+
+
+/* ===================================================
+   Shared Section Styles
+   =================================================== */
+.section-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.section-title {
+  font-family: var(--font-en), var(--font-cn);
+  font-size: 42px;
+  font-weight: 800;
+  text-align: center;
+  color: var(--color-dark);
+  margin-bottom: 1rem;
+  letter-spacing: -1px;
+  line-height: 1.1;
+}
+
+/* Replace colored underline bar with a softer typographic treatment */
+.section-title::after {
+  content: none;
+}
+
+.section-subtitle {
+  text-align: center;
+  color: var(--color-mid);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.75;
+  max-width: 600px;
+  margin: 0 auto 3.5rem;
+}
+
+.cards-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+
+/* ===================================================
+   Pain Points Section
+   =================================================== */
+.pain-points {
+  padding: var(--space-xl) 2rem;
+  background: #FFFFFF;
+}
+
+.pain-card {
+  background: #FFFFFF;
+  border-radius: var(--radius);
+  padding: 2.25rem 2rem;
+  box-shadow: var(--shadow-md);
+  transition:
+    transform var(--duration-slow) var(--transition),
+    box-shadow var(--duration-slow) var(--transition);
+  /* No colored top border — let the shadow and shape do the talking */
+}
+
+.pain-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+
+/* ===================================================
+   Capabilities Section
+   =================================================== */
+.capabilities {
+  padding: var(--space-xl) 2rem calc(var(--space-xl) + 20px);
+  background: #F5F5F7;
+}
+
+.cap-card {
+  background: #FFFFFF;
+  border-radius: var(--radius);
+  padding: 2.25rem 2rem;
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform var(--duration-slow) var(--transition),
+    box-shadow var(--duration-slow) var(--transition);
+}
+
+.cap-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: var(--shadow-md);
+}
+
+
+/* ===================================================
+   Shared Card Inner Styles
+   =================================================== */
+.card-icon {
+  font-size: 56px;
+  margin-bottom: 1.25rem;
+  line-height: 1;
+}
+
+.card-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--color-dark);
+  margin-bottom: 0.65rem;
+  letter-spacing: -0.3px;
+}
+
+.card-desc {
+  font-size: 15px;
+  color: var(--color-mid);
+  line-height: 1.75;
+}
+
+/* Second CTA center */
+.cta-center {
+  margin-top: 4rem;
+  text-align: center;
+}
+
+
+/* ===================================================
+   Scroll Reveal Animation — slower, more graceful
+   =================================================== */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity var(--duration-slower) var(--transition),
+    transform var(--duration-slower) var(--transition);
+}
+
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered delays — card 1: 0s, card 2: 0.15s, card 3: 0.3s */
+.cards-row .scroll-reveal:nth-child(1) {
+  transition-delay: 0s;
+}
+.cards-row .scroll-reveal:nth-child(2) {
+  transition-delay: 0.15s;
+}
+.cards-row .scroll-reveal:nth-child(3) {
+  transition-delay: 0.30s;
+}
+
+
+/* ===================================================
+   Responsive
+   =================================================== */
+@media (max-width: 768px) {
+  .hero-brand {
+    font-size: 48px;
+    letter-spacing: -1.5px;
+  }
+
+  .hero-logo {
+    font-size: 120px;
+  }
+
+  .hero-slogan {
+    font-size: 22px;
+  }
+
+  .hero-subtitle {
+    font-size: 16px;
+  }
+
+  .section-title {
+    font-size: 32px;
+    letter-spacing: -0.5px;
+  }
+
+  .section-subtitle {
+    font-size: 16px;
+  }
+
+  .cards-row {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .cards-row .scroll-reveal:nth-child(2),
+  .cards-row .scroll-reveal:nth-child(3) {
+    transition-delay: 0s;
+  }
+
+  .pain-points,
+  .capabilities {
+    padding: var(--space-lg) 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-brand {
+    font-size: 38px;
+    letter-spacing: -1px;
+  }
+
+  .hero-logo {
+    font-size: 96px;
+  }
+
+  .hero-slogan {
+    font-size: 19px;
+  }
+
+  .cta-btn {
+    font-size: 16px;
+    padding: 16px 36px;
+  }
+}

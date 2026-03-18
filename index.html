@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CopilotClaw — 你的后台任务搭档</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦞</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/landing.css" />
+  <link rel="stylesheet" href="css/demo.css" />
+</head>
+<body>
+
+  <!-- Landing Page -->
+  <div id="landing-page">
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+      <div class="hero-content">
+        <div class="hero-logo">🦞</div>
+        <h1 class="hero-brand">
+          <span class="brand-dark">Copilot</span><span class="brand-red">Claw</span>
+        </h1>
+        <p class="hero-slogan">支线任务，后台搞定。</p>
+        <p class="hero-subtitle">工作中充满"我帮你问一下""改完发你""后续跟进"这样的支线任务——<br>它们打断专注、吞噬时间、最后被遗忘。<br>CopilotClaw 实时感知这些任务，主动接管，后台完成。</p>
+        <button class="cta-btn" onclick="window.startDemo()">开始体验 →</button>
+      </div>
+      <div class="scroll-indicator">
+        <div class="chevron-bounce">&#8964;</div>
+      </div>
+    </section>
+
+    <!-- Core Problem Section -->
+    <section class="pain-points" id="pain-points">
+      <div class="section-container">
+        <h2 class="section-title">支线任务正在拖垮你的工作</h2>
+        <p class="section-subtitle scroll-reveal">每天，我们在聊天和会议中产生大量"顺口一提"的小任务。它们看似简单，实则是专注力和生产力的最大杀手。</p>
+        <div class="cards-row">
+          <div class="pain-card scroll-reveal">
+            <div class="card-icon">🧠</div>
+            <h3 class="card-title">注意力碎片化</h3>
+            <p class="card-desc">每次被支线任务打断，你需要 <strong>23分钟</strong> 才能回到原来的专注状态。一天被打断8次，等于损失3小时深度工作时间。</p>
+          </div>
+          <div class="pain-card scroll-reveal">
+            <div class="card-icon">📉</div>
+            <h3 class="card-title">生产力黑洞</h3>
+            <p class="card-desc">"我问一下老张回头告诉你""改完发我""后面跟进一下"——这些5分钟的小事，因为切换成本和遗忘，实际消耗 <strong>10倍</strong> 的时间。</p>
+          </div>
+          <div class="pain-card scroll-reveal">
+            <div class="card-icon">🕳️</div>
+            <h3 class="card-title">待办黑洞</h3>
+            <p class="card-desc">口头承诺的任务没有落到纸面，散落在聊天记录和会议回忆里。<strong>73%的口头待办</strong>在24小时内被遗忘，直到有人来催。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section class="capabilities" id="capabilities">
+      <div class="section-container">
+        <h2 class="section-title">CopilotClaw 的三重价值</h2>
+        <p class="section-subtitle scroll-reveal">不是又一个待办清单工具——是一个能感知、行动、归档的后台搭档。</p>
+        <div class="cards-row">
+          <div class="cap-card scroll-reveal">
+            <div class="card-icon">🛡️</div>
+            <h3 class="card-title">守护你的专注力</h3>
+            <p class="card-desc">支线任务不再需要你亲自处理。Claw在后台静默完成，<strong>你的注意力留在主线上</strong>，心流不被打断。</p>
+          </div>
+          <div class="cap-card scroll-reveal">
+            <div class="card-icon">🚀</div>
+            <h3 class="card-title">释放生产力</h3>
+            <p class="card-desc">会还没开完，文件已经改好了。对话还在继续，信息已经中转完了。<strong>把5分钟的事压缩到0秒</strong>，时间还给你。</p>
+          </div>
+          <div class="cap-card scroll-reveal">
+            <div class="card-icon">📋</div>
+            <h3 class="card-title">终结待办黑洞</h3>
+            <p class="card-desc">会议里的每一句"后续跟进"都被自动捕获、结构化、归档到看板和日历。<strong>口头承诺变成可追踪的任务</strong>。</p>
+          </div>
+        </div>
+        <div class="cta-center">
+          <button class="cta-btn" onclick="window.startDemo()">体验"小王的一天" →</button>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /#landing-page -->
+
+  <!-- Demo Mode (hidden by default) -->
+  <div id="demo-mode" class="hidden">
+
+    <!-- Progress / Scene Navigation Bar -->
+    <nav class="demo-progress-bar" id="demo-progress-bar">
+      <div class="demo-progress-tabs">
+        <button class="progress-tab active" onclick="window.SceneManager.loadScene(0)">09:00 聊天</button>
+        <button class="progress-tab"        onclick="window.SceneManager.loadScene(1)">10:30 会议</button>
+        <button class="progress-tab"        onclick="window.SceneManager.loadScene(2)">14:00 归档</button>
+      </div>
+      <div class="progress-line-track">
+        <div class="progress-line-fill"></div>
+      </div>
+    </nav>
+
+    <!-- Scene content renders here -->
+    <div id="scene-container"></div>
+
+    <!-- Overlay: notifications, dynamic island, guide finger -->
+    <div id="overlay-layer"></div>
+
+  </div><!-- /#demo-mode -->
+
+  <!-- JS: load order matters — utils first, then components, then scenes, then app -->
+  <script src="js/utils.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/scene-chat.js"></script>
+  <script src="js/scene-meeting.js"></script>
+  <script src="js/scene-kanban.js"></script>
+  <script src="js/landing.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
